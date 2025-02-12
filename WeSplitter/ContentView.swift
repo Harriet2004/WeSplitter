@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State private var priceAmount = 0.0
     @State private var noOfPeople = 4
-    @State private var tipPercentage = 20
+    @State private var tipPercentage = 0
     
     let tipPercentages = [0, 5, 10, 15, 20]
     
@@ -27,6 +27,14 @@ struct ContentView: View {
                         }
                     }
                     .pickerStyle(.navigationLink)
+                }
+                
+                Section {
+                    Picker("Tip Percentage", selection: $tipPercentage) {
+                        ForEach(tipPercentages, id: \.self) {
+                            Text(($0), format: .percent)
+                        }
+                    }
                 }
                 
                 Section {
