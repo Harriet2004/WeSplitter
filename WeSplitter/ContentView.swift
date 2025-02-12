@@ -9,10 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var priceAmount = 0.0
-    @State private var noOfPeople = 4
+    @State private var noOfPeople = 2
     @State private var tipPercentage = 0
     
     let tipPercentages = [0, 5, 10, 15, 20]
+    
+    var totalAmount : Double {
+        let peopleCount = Double(noOfPeople)
+        let tipValue = Double(tipPercentage)
+        let tipAmount = priceAmount * (tipValue / 100)
+        let finalValue = priceAmount + tipAmount
+        let splitValue = finalValue / peopleCount
+        return splitValue
+    }
     
     var body: some View {
         NavigationStack {
@@ -39,7 +48,7 @@ struct ContentView: View {
                 }
                 
                 Section {
-                    Text(priceAmount, format:.currency(code: Locale.current.currency?.identifier ?? "AED"))
+                    Text(totalAmount, format:.currency(code: Locale.current.currency?.identifier ?? "AED"))
                 }
             }
             .navigationTitle("WeSplitter")
