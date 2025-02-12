@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var priceAmount = 0.0
     @State private var noOfPeople = 2
     @State private var tipPercentage = 0
+    @FocusState private var isFocussed: Bool
     
     let tipPercentages = [0, 5, 10, 15, 20]
     
@@ -29,6 +30,7 @@ struct ContentView: View {
                 Section {
                     TextField("Enter amount:", value: $priceAmount, format: .currency(code: Locale.current.currency?.identifier ?? "AED"))
                         .keyboardType(.decimalPad)
+                        .focused($isFocussed)
                     
                     Picker("Number of people", selection: $noOfPeople) {
                         ForEach(2...100, id: \.self) {
@@ -52,6 +54,13 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("WeSplitter")
+            .toolbar {
+                if isFocussed {
+                    Button("Done") {
+                        isFocussed = false
+                    }
+                }
+            }
         }
     }
 }
