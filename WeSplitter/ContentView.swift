@@ -12,9 +12,7 @@ struct ContentView: View {
     @State private var noOfPeople = 2
     @State private var tipPercentage = 0
     @FocusState private var isFocussed: Bool
-    
-    let tipPercentages = [0, 5, 10, 15, 20]
-    
+        
     var totalAmount : Double {
         let peopleCount = Double(noOfPeople)
         let tipValue = Double(tipPercentage)
@@ -24,11 +22,19 @@ struct ContentView: View {
         return splitValue
     }
     
+    var finalAmount : Double {
+        let peopleCount = Double(noOfPeople)
+        let tipValue = Double(tipPercentage)
+        let tipAmount = priceAmount * (tipValue / 100)
+        let finalValue = priceAmount + tipAmount
+        return finalValue
+    }
+    
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Enter amount:", value: $priceAmount, format: .currency(code: Locale.current.currency?.identifier ?? "AED"))
+                    TextField("Enter amount:", value: $priceAmount, format: .currency(code: Locale.current.currency?.identifier ?? "AUD"))
                         .keyboardType(.decimalPad)
                         .focused($isFocussed)
                     
@@ -42,15 +48,19 @@ struct ContentView: View {
                 
                 Section ("How much do you want to tip?") {
                     Picker("Tip Percentage", selection: $tipPercentage) {
-                        ForEach(tipPercentages, id: \.self) {
+                        ForEach(0...100, id: \.self) {
                             Text(($0), format: .percent)
                         }
                     }
-                    .pickerStyle(.segmented)
+                    .pickerStyle(.navigationLink)
                 }
                 
-                Section {
-                    Text(totalAmount, format:.currency(code: Locale.current.currency?.identifier ?? "AED"))
+                Section ("Total amount for the check") {
+                    Text(finalAmount, format:.currency(code: Locale.current.currency?.identifier ?? "AUD"))
+                }
+                
+                Section ("Amount per person") {
+                    Text(totalAmount, format:.currency(code: Locale.current.currency?.identifier ?? "AUD"))
                 }
             }
             .navigationTitle("WeSplitter")
